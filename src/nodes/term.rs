@@ -2,7 +2,7 @@ use imgui::Ui;
 use imnodes::{InputPinId, NodeId};
 
 use crate::{
-    core::app::input_num,
+    core::widgets::input_num,
     core::App,
     exprtree::{ExpressionNode, Leaf, Sign},
     pins::{OutputPin, Pin},
@@ -26,6 +26,11 @@ impl NodeImpl for Term {
 
     fn name(&self) -> &str {
         &self.leaf.symbol
+    }
+
+    #[inline]
+    fn is_assignable(&self) -> bool {
+        true
     }
 
     fn name_mut(&mut self) -> &mut String {

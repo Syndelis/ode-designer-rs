@@ -8,7 +8,10 @@
 
 *.csv
 *.py
+!scripts/*.py
 *.pdf
 
 *.png
 !appimage/**.png
+
+*.zip

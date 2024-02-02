@@ -1,7 +1,7 @@
 [submodule "crates/imnodes"]
 	path = crates/imnodes
 	url = https://github.com/Diegovsky/imnodes-rs
-	branch = ode-designer
+	branch = chore/only-bump-imgui
 [submodule "crates/odeir"]
 	path = crates/odeir
 	url = https://github.com/syndelis/odeir

@@ -2,7 +2,7 @@ use imgui::{StyleColor, Ui};
 use imnodes::{InputPinId, NodeId, OutputPinId};
 
 use crate::{
-    core::{app::rgb, GeneratesId},
+    core::{widgets::rgb, GeneratesId},
     exprtree::{ExpressionNode, Sign},
 };
 

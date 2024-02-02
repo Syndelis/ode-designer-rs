@@ -108,6 +108,11 @@ pub trait NodeImpl {
         None
     }
 
+    #[inline]
+    fn is_assignable(&self) -> bool {
+        false
+    }
+
     fn draw(&mut self, ui: &Ui) -> bool;
 
     fn inputs(&self) -> Option<&[InputPin]> {
