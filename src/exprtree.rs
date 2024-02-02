@@ -12,7 +12,7 @@ pub struct ExpressionTree<OriginType: Hash> {
 impl<OriginType: Hash> Default for ExpressionTree<OriginType> {
     fn default() -> Self {
         Self {
-            join_op: Default::default(),
+            join_op: Operation::Mul,
             members: Default::default(),
             unary_op: Default::default(),
         }
@@ -121,13 +121,12 @@ impl<OriginType: Hash> ExpressionNode<OriginType> {
                 Sign::Positive => symbol.clone(),
                 Sign::Negative => format!("-{}", symbol),
             },
-            ExpressionNode::SubExpr(exprtree) =>
-            {   
+            ExpressionNode::SubExpr(exprtree) => {
                 let mut eq: String = exprtree.resolve_into_equation();
                 eq.insert(0, '(');
                 eq.push(')');
                 eq
-            },
+            }
         }
     }
 

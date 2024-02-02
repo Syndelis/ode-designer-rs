@@ -17,7 +17,7 @@ use crate::nodes::{LinkEvent, Node, NodeVariant, PendingOperation, PendingOperat
 use crate::pins::Pin;
 use crate::utils::{ModelFragment, VecConversion};
 
-use imgui::{StyleVar, TabItem, Ui};
+use imgui::{Key, StyleVar, TabItem, Ui};
 
 use crate::core::plot::PlotInfo;
 use crate::core::plot::PlotLayout;
@@ -192,9 +192,10 @@ pub fn rgb(r: u8, g: u8, b: u8) -> [f32; 4] {
 }
 
 pub fn input_num(ui: &Ui, label: &str, value: &mut f64) -> bool {
-    let _width = ui.push_item_width(50.0);
+    let _width = ui.push_item_width(72.0);
+
     ui.input_scalar(label, value)
-        .display_format("%.2lf")
+        .display_format("%.8lf")
         .build()
 }
 
@@ -225,7 +226,10 @@ impl AppState {
                     });
 
                     let _token = ui.push_style_var(StyleVar::FramePadding([4.0; 2]));
-                    if ui.button("Add") {
+
+                    let enter_pressed = ui.is_key_pressed(Key::Enter);
+
+                    if ui.button("Add") || enter_pressed {
                         let node_variant = NodeVariant::from_repr(*index)
                             .expect("User tried to construct an out-of-index node specialization");
 
@@ -353,18 +357,34 @@ impl App {
 
         if let Some(_t) = ui.begin_table("Basic-Table", 1) {
             ui.table_next_row();
-        
+
             ui.table_next_column();
-            ui.text("Ícone 1");
-        
+            if ui.button("Botão 1") {
+                let mut name = String::new();
+
+                if let Some(_popup) = ui.begin_popup("Create Node") {
+                    ui.text("Name");
+                    ui.same_line();
+                    ui.input_text("##Name", &mut name).build();
+                }
+
+                if !name.is_empty() {
+                    let node_variant = NodeVariant::from_repr(1)
+                        .expect("User tried to construct an out-of-index node specialization");
+
+                    let node_id = self.add_node(Node::build_from_ui(name, node_variant));
+                    self.queue.push(Message::SetNodePos {
+                        node_id,
+                        screen_space_pos: ui.window_pos(),
+                    });
+                }
+            }
+
             ui.table_next_column();
-            ui.text("Ícone 2");
-            
+            if ui.button("Botão 2") {}
+
             ui.table_next_column();
-            ui.text("Ícone 3");
-        
-            ui.table_next_column();
-            ui.text("Ícone 4");
+            if ui.button("Botão 3") {}
         }
 
         table_group.end();

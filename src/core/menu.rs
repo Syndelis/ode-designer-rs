@@ -42,15 +42,14 @@ impl App {
             });
 
             ui.menu("Export", || {
-                if ui.menu_item("Generate Code") {                    
+                if ui.menu_item("Generate Code") {
                     let py_code = self.generate_code();
                     self.save_to_file(py_code, "py");
                 }
 
                 if ui.menu_item("Plot to PDF") {
-                    if let Some(file_path) = FileDialog::new()
-                        .add_filter("pdf", &["pdf"])
-                        .save_file()
+                    if let Some(file_path) =
+                        FileDialog::new().add_filter("pdf", &["pdf"]).save_file()
                     {
                         let py_code = self.generate_code();
                         Command::new("python3")
@@ -74,8 +73,7 @@ impl App {
                     .spawn()
                     .unwrap();
 
-                self.simulation_state =
-                    Some(SimulationState::from_csv(python_out.stdout.unwrap()));
+                self.simulation_state = Some(SimulationState::from_csv(python_out.stdout.unwrap()));
             }
         });
     }
