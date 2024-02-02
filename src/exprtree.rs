@@ -12,7 +12,7 @@ pub struct ExpressionTree<OriginType: Hash> {
 impl<OriginType: Hash> Default for ExpressionTree<OriginType> {
     fn default() -> Self {
         Self {
-            join_op: Operation::Mul,
+            join_op: Default::default(),
             members: Default::default(),
             unary_op: Default::default(),
         }
@@ -162,13 +162,13 @@ impl<OriginType: Hash> ExpressionNode<OriginType> {
 )]
 #[repr(u8)]
 pub enum Operation {
-    #[default]
     #[strum(serialize = "+")]
     Add,
     #[strum(serialize = "-")]
     Sub,
     #[strum(serialize = "/", serialize = "÷")]
     Div,
+    #[default]
     #[strum(serialize = "*", serialize = "×")]
     Mul,
 }
