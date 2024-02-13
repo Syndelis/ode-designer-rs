@@ -7,8 +7,6 @@
 !src/**.json
 
 *.csv
-*.py
-!scripts/*.py
 *.pdf
 
 *.png

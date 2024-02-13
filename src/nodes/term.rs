@@ -63,7 +63,7 @@ impl NodeImpl for Term {
         Some(std::array::from_mut(&mut self.output))
     }
 
-    fn to_model_fragment(&self, _app: &App) -> Option<ModelFragment> {
+    fn to_model_fragment(&self) -> Option<ModelFragment> {
         Some(
             odeir::Argument::Value {
                 name: self.name().to_owned(),

@@ -292,6 +292,7 @@ impl AppState {
 }
 
 impl App {
+    /// Draws the nodes and other elements
     pub fn draw_editor(&mut self, ui: &Ui, editor: &mut imnodes::EditorScope) {
         // Minimap
         editor.add_mini_map(imnodes::MiniMapLocation::BottomRight);
@@ -302,7 +303,7 @@ impl App {
             let _col2 = imnodes::ColorStyle::TitleBarSelected.push_color(node.selected_color());
             let _col3 = imnodes::ColorStyle::TitleBarHovered.push_color(node.hovered_color());
             editor.add_node(*id, |mut ui_node| {
-                let (msgs, app_state_change) = node.process_node(ui, &mut ui_node);
+                let (msgs, app_state_change) = node.process_node(ui, &mut ui_node, self);
                 if let Some(msgs) = msgs {
                     for msg in msgs {
                         self.queue.push(msg)
@@ -739,7 +740,7 @@ impl App {
         serde_json::to_writer_pretty(file, &json).ok()
     }
 
-    fn try_read_model(&mut self, model: OdeModel) -> anyhow::Result<()> {
+    fn try_read_model(&mut self, model: OdeModel) -> color_eyre::Result<()> {
         let odeir::CoreModel {
             equations,
             arguments,
@@ -847,7 +848,7 @@ impl App {
         Ok(())
     }
 
-    pub fn load_state(&mut self) -> anyhow::Result<()> {
+    pub fn load_state(&mut self) -> color_eyre::Result<()> {
         let file_path = FileDialog::new()
             .add_filter("json", &["json"])
             .pick_file()
@@ -862,7 +863,7 @@ impl App {
         self.load_model_from_reader(&mut reader)
     }
 
-    pub fn load_model_from_reader(&mut self, reader: &mut dyn Read) -> anyhow::Result<()> {
+    pub fn load_model_from_reader(&mut self, reader: &mut dyn Read) -> color_eyre::Result<()> {
         let odeir::Model::ODE(model) = serde_json::from_reader(reader)? else {
             Err(NotCorrectModel::NotODE)?
         };
@@ -948,7 +949,7 @@ mod tests {
 
                 output_pin.link_to(input_pin_id);
 
-                expr.on_link_event(link_event);
+                expr.notify(link_event);
             }
 
             expr.into()
@@ -976,7 +977,7 @@ mod tests {
 
             assigner.input.link_to(output_pin.id);
 
-            assigner.on_link_event(LinkEvent::Push {
+            assigner.notify(LinkEvent::Push {
                 from_pin_id: assigner.input.id,
                 payload: argument.send_data(),
             });

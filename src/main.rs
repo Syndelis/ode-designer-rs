@@ -18,6 +18,7 @@ pub mod exprtree;
 pub mod nodes;
 pub mod pins;
 pub mod utils;
+pub mod extensions;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     color_eyre::install().unwrap();
@@ -25,6 +26,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut system = System::make_window("ODE Editor", (1024.0, 768.0));
 
     style::set_eel_style(system.imgui.style_mut());
+
+    extensions::python::init();
 
     let nodesctx = imnodes::Context::new();
     let mut nodeseditor = nodesctx.create_editor();

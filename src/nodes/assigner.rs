@@ -4,7 +4,7 @@ use imgui::ImColor32;
 use imnodes::{InputPinId, NodeId};
 
 use crate::{
-    core::app::AppState,
+    core::{app::AppState, App},
     exprtree::{ExpressionNode, Sign},
     message::Message,
     pins::{InputPin, Pin},
@@ -47,11 +47,7 @@ impl NodeImpl for Assigner {
         unreachable!("This node doesn't feature an output pin")
     }
 
-    fn broadcast_data(&self) -> Vec<Message> {
-        vec![]
-    }
-
-    fn on_link_event(&mut self, link_event: LinkEvent) -> bool {
+    fn notify(&mut self, link_event: LinkEvent) -> Option<Vec<Message>> {
         match link_event {
             LinkEvent::Push { payload, .. } => {
                 let payload = self.input.map_data(payload);
@@ -60,7 +56,7 @@ impl NodeImpl for Assigner {
             LinkEvent::Pop(_) => self.expr_node.set_expr(None),
         };
 
-        false
+        None
     }
 
     fn state_changed(&mut self) -> bool {

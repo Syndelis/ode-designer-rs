@@ -77,7 +77,7 @@ impl NodeImpl for Expression {
         ImColor32::from_rgb(6, 214, 140)
     }
 
-    fn on_link_event(&mut self, link_event: LinkEvent) -> bool {
+    fn notify(&mut self, link_event: LinkEvent) -> bool {
         match link_event {
             LinkEvent::Push {
                 from_pin_id,
@@ -118,8 +118,8 @@ impl NodeImpl for Expression {
     }
 
     fn notify(&mut self, link_event: LinkEvent) -> Option<Vec<Message>> {
-        self.on_link_event(link_event)
-            .then(|| self.broadcast_data())
+        self.notify(link_event)
+            .then(|| self.send_data())
             .map(|data| [std::mem::take(&mut self.message_buffer), data].concat())
     }
 
