@@ -45,9 +45,12 @@ cargo build --target "$target" ${args[@]}
 
 executable="target/$target/$buildtype/ode-designer-rs.exe"
 mingw_dir='/usr/x86_64-w64-mingw32/bin'
+final_zip="windows-build-$buildtype.zip"
 
 {
     echo $executable & python scripts/mingw-ldd.py "$executable" \
     --output-format filelist\
     --dll-lookup-dirs $mingw_dir
-} | zip -@ -j "windows-build-$buildtype.zip"
+} | zip -@ -j $final_zip
+
+[ -d vendored_python ] && zip -ur $final_zip vendored_python/

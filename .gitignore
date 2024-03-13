@@ -9,6 +9,7 @@
 *.csv
 *.py
 !scripts/*.py
+!windows/**
 *.pdf
 
 *.png
