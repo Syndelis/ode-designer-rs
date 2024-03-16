@@ -44,13 +44,14 @@ fi
 cargo build --target "$target" ${args[@]}
 
 executable="target/$target/$buildtype/ode-designer-rs.exe"
-mingw_dir='/usr/x86_64-w64-mingw32/bin'
-final_zip="windows-build-$buildtype.zip"
+mingw_dir=/usr/lib/gcc/x86_64-w64-mingw32/10-win32
+rust_toolchain_dir=/usr/local/rustup/toolchains/stable-x86_64-pc-windows-gnu/bin
+final_zip="target/$target/$buildtype/windows-build.zip"
 
 {
-    echo $executable & python scripts/mingw-ldd.py "$executable" \
+    echo $executable && python3 windows/scripts/mingw-ldd.py "$executable" \
     --output-format filelist\
-    --dll-lookup-dirs $mingw_dir
+    --dll-lookup-dirs $mingw_dir $rust_toolchain_dir
 } | zip -@ -j $final_zip
 
 [ -d vendored_python ] && zip -ur $final_zip vendored_python/

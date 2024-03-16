@@ -1,4 +1,6 @@
 ARG PYTHON_BASE_APPIMAGE_PATH=/python-base-appimage
+ARG WINDOWS_TARGET=x86_64-pc-windows-gnu
+ARG WINDOWS_VENDORED_PYTHON_DIR=vendored_python
 
 FROM appimagecrafters/appimage-builder AS python-appimage-downloader
 ARG PYTHON_BASE_APPIMAGE_PATH
@@ -84,3 +86,57 @@ FROM builder-dependencies AS builder
 COPY . .
 
 ENTRYPOINT [ "appimage/scripts/build-appimage.sh" ]
+
+# ------------------------------------------------------------------------------
+
+FROM python:3.11.1-slim-buster AS windows-python-bundler
+ARG WINDOWS_VENDORED_PYTHON_DIR
+ENV WINDOWS_VENDORED_PYTHON_DIR=${WINDOWS_VENDORED_PYTHON_DIR}
+
+ENV PYTHON_VERSION=3.11.1
+ENV SITE_PACKAGES=${WINDOWS_VENDORED_PYTHON_DIR}/Lib/site-packages
+
+RUN apt-get update && apt-get install -y zip unzip wget
+
+RUN wget https://bootstrap.pypa.io/get-pip.py -O get-pip.py
+RUN wget https://www.python.org/ftp/python/$PYTHON_VERSION/python-$PYTHON_VERSION-embed-amd64.zip -O python.zip
+
+RUN unzip python.zip -d $WINDOWS_VENDORED_PYTHON_DIR && \
+    mkdir -p $SITE_PACKAGES
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    --mount=type=bind,source=requirements.txt,target=requirements.txt \
+    pip3 install \
+    --target=$SITE_PACKAGES \
+    --platform=win_amd64 \
+    --only-binary=:all: \
+    -r requirements.txt
+
+# So that the portable Python interpreter can discover the dependencies
+RUN echo "Lib\nLib\\site-packages" >> $WINDOWS_VENDORED_PYTHON_DIR/python311._pth
+
+# ------------------------------------------------------------------------------
+
+FROM setup AS windows-builder
+ARG WINDOWS_TARGET
+ENV WINDOWS_TARGET=${WINDOWS_TARGET}
+
+ARG WINDOWS_VENDORED_PYTHON_DIR
+ENV WINDOWS_VENDORED_PYTHON_DIR=${WINDOWS_VENDORED_PYTHON_DIR}
+
+RUN echo $WINDOWS_VENDORED_PYTHON_DIR > path.txt
+
+COPY --from=windows-python-bundler /$WINDOWS_VENDORED_PYTHON_DIR ./$WINDOWS_VENDORED_PYTHON_DIR
+
+RUN apt-get install -y \
+    gcc-mingw-w64-x86-64 \
+    g++-mingw-w64-x86-64 \
+    gcc-mingw-w64-x86-64-win32-runtime \
+    zip python3 python3-pefile
+
+RUN rustup target add $WINDOWS_TARGET 
+RUN rustup toolchain install stable-$WINDOWS_TARGET
+
+COPY . .
+
+CMD [ "windows/scripts/windows-compile.sh" ]
