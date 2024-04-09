@@ -105,6 +105,20 @@ impl<'n> App<'n> {
                     Some(AppState::ManagingExtensions)
                 }
             }
+
+            ui.menu("Help", || {
+                if (ui.menu_item("About")){
+                    let [width, height] = ui.window_size();
+                    //ui.set_cursor_screen_pos(width/2,height/2);
+                    ui.open_popup("Help");
+                }                                
+            });
+
+            if let Some(_popup) = ui.begin_popup("Help") {
+                ui.text("Name");
+                ui.same_line();
+            }
+
         });
     }
 }
