@@ -225,6 +225,7 @@ pub enum AppState {
         search_query: String,
     },
     ManagingExtensions,
+    MenuHelp,
 }
 
 enum StateAction {
@@ -363,6 +364,34 @@ impl AppState {
                                 eprintln!("Error opening/inspecting user extension file: {err}");
                             }
                         }
+                    });
+
+                if user_kept_open {
+                    StateAction::Keep
+                } else {
+                    StateAction::Clear
+                }
+            }
+            AppState::MenuHelp => {
+                let wsize = ui.window_size();
+                let mut user_kept_open = true;
+                let w_height = 200.0;
+                let w_width = 300.0;
+                let x_window = (wsize[0] - w_width) / 2.0;
+                let y_window = (wsize[1] - w_height) / 2.0;
+
+                ui.window("Help")
+                    .position([x_window,y_window], imgui::Condition::FirstUseEver)
+                    .size([w_width,w_height], imgui::Condition::FirstUseEver)
+                    .collapsible(false)
+                    .opened(&mut user_kept_open.clone())
+                    .build(|| {
+                        ui.text_wrapped("ODE-designer, a software for computational modeling and simulation. Authors: Brenno ...");
+
+                        if ui.button("Ok") {
+                            user_kept_open = false;                           
+                        }
+                        
                     });
 
                 if user_kept_open {

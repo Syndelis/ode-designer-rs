@@ -107,18 +107,14 @@ impl<'n> App<'n> {
             }
 
             ui.menu("Help", || {
-                if (ui.menu_item("About")){
-                    let [width, height] = ui.window_size();
-                    //ui.set_cursor_screen_pos(width/2,height/2);
-                    ui.open_popup("Help");
-                }                                
+                if ui.menu_item("About") {
+                    self.state = if let Some(AppState::MenuHelp) = self.state {
+                        None
+                    } else {
+                        Some(AppState::MenuHelp)
+                    }
+                }
             });
-
-            if let Some(_popup) = ui.begin_popup("Help") {
-                ui.text("Name");
-                ui.same_line();
-            }
-
         });
     }
 }
