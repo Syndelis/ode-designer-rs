@@ -385,9 +385,13 @@ impl AppState {
                     .size([w_width,w_height], imgui::Condition::FirstUseEver)
                     .collapsible(false)
                     .opened(&mut user_kept_open.clone())
+                    .movable(false)
                     .build(|| {
-                        ui.text_wrapped("ODE-designer, a software for computational modeling and simulation. Authors: Brenno ...");
-
+                        //colocar um icone
+                        ui.text("ODE-designer");
+                        ui.text_wrapped("A software for computational modeling and simulation.");
+                        ui.text_wrapped("Authors: Brenno ...");
+                        ui.text("GitHub:https://github.com/Syndelis/ode-designer-rs");
                         if ui.button("Ok") {
                             user_kept_open = false;                           
                         }
