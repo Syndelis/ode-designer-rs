@@ -4,11 +4,7 @@ use odeir::models::CompositionStyle;
 use strum::VariantArray;
 
 use crate::{
-    core::App,
-    exprtree::{ExpressionNode, ExpressionTree, Operation, Sign},
-    message::Message,
-    pins::{InputPin, OutputPin, Pin},
-    utils::ModelFragment,
+    core::App, exprtree::{ExpressionNode, ExpressionTree, Operation, Sign}, locale::Locale, message::Message, pins::{InputPin, OutputPin, Pin}, utils::ModelFragment
 };
 
 use super::{
@@ -136,7 +132,7 @@ impl NodeImpl for Expression {
         true
     }
 
-    fn draw(&mut self, ui: &imgui::Ui) -> bool {
+    fn draw(&mut self, ui: &imgui::Ui, locale: &Locale) -> bool {
         let mut selected = self.expr_wrapper.join_op() as usize;
         let mut changed = false;
 
@@ -161,7 +157,7 @@ impl NodeImpl for Expression {
 
         match self.expr_wrapper.get_expr_repr() {
             Some(expr) => ui.text(expr),
-            None => ui.text("Nothing yet!"),
+            None => ui.text(locale.get("nothing-yet")),
         };
 
         changed

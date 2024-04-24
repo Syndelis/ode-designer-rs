@@ -5,12 +5,7 @@ use imnodes::{InputPinId, NodeId};
 use odeir::models::CompositionStyle;
 
 use crate::{
-    core::App,
-    exprtree::{ExpressionNode, ExpressionTree},
-    extensions::CustomNodeSpecification,
-    message::Message,
-    pins::{InputPin, OutputPin, Pin},
-    utils::ModelFragment,
+    core::App, exprtree::{ExpressionNode, ExpressionTree}, extensions::CustomNodeSpecification, locale::Locale, message::Message, pins::{InputPin, OutputPin, Pin}, utils::ModelFragment
 };
 
 use super::{
@@ -126,10 +121,10 @@ impl NodeImpl for CustomFunctionNode {
         None
     }
 
-    fn draw(&mut self, ui: &imgui::Ui) -> bool {
+    fn draw(&mut self, ui: &imgui::Ui, locale: &Locale) -> bool {
         match self.expr_wrapper.get_expr_repr() {
             Some(expr) => ui.text(expr),
-            None => ui.text("Nothing yet!"),
+            None => ui.text(locale.get("nothing-yet")),
         };
         false
     }

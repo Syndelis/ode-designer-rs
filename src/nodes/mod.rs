@@ -21,12 +21,7 @@ use imgui::{ImColor32, Ui};
 use imnodes::{InputPinId, NodeId, NodeScope, OutputPinId};
 
 use crate::{
-    core::{app::AppState, App, GeneratesId},
-    exprtree::{ExpressionNode, ExpressionTree, Sign},
-    extensions::CustomNodeSpecification,
-    message::{Message, SendData},
-    pins::{InputPin, OutputPin, Pin},
-    utils::ModelFragment,
+    core::{app::AppState, App, GeneratesId}, exprtree::{ExpressionNode, ExpressionTree, Sign}, extensions::CustomNodeSpecification, locale::Locale, message::{Message, SendData}, pins::{InputPin, OutputPin, Pin}, utils::ModelFragment
 };
 
 use derive_more::From;
@@ -47,20 +42,16 @@ pub enum LinkEvent {
     Pop(InputPinId),
 }
 
-pub struct NodeTypeRepresentation<'n> {
-    pub name: Cow<'n, str>,
+pub struct NodeTypeRepresentation {
+    pub name: String,
     pub variant: NodeVariant,
     pub custom_node_spec: Option<Rc<CustomNodeSpecification>>,
 }
 
-impl<'n> NodeTypeRepresentation<'n> {
-    pub fn new(
-        name: &'n str,
-        variant: NodeVariant,
-        custom_node_spec: Option<Rc<CustomNodeSpecification>>,
-    ) -> Self {
+impl NodeTypeRepresentation {
+    pub fn new<S: ToString>(name: S, variant: NodeVariant, custom_node_spec: Option<Rc<CustomNodeSpecification>>) -> Self {
         Self {
-            name: Cow::from(name),
+            name: name.to_string(),
             variant,
             custom_node_spec,
         }
@@ -142,6 +133,7 @@ impl Node {
         &mut self,
         ui: &Ui,
         ui_node: &mut NodeScope,
+        locale: &Locale,
     ) -> (Option<Vec<Message>>, Option<AppState>) {
         let mut name_changed = false;
         let mut remove_node = false;
@@ -192,7 +184,7 @@ impl Node {
             ui_node.add_output(id, shape, || {});
         }
 
-        let inner_content_changed = self.draw(ui);
+        let inner_content_changed = self.draw(ui, locale);
 
         let mut messages = ((inner_content_changed || input_changed) && self.state_changed()
             || name_changed)
@@ -257,7 +249,7 @@ pub trait NodeImpl {
         false
     }
 
-    fn draw(&mut self, ui: &Ui) -> bool;
+    fn draw(&mut self, ui: &Ui, locale: &Locale) -> bool;
 
     fn inputs(&self) -> Option<&[InputPin]> {
         None
@@ -345,7 +337,7 @@ impl<T: Resolvable> Resolvable for Option<T> {
     fn resolve(&self) -> String {
         match self {
             Some(expr) => expr.resolve(),
-            None => "Nothing yet!".to_string(),
+            None => "".to_string(),
         }
     }
 }

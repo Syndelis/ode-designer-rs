@@ -4,11 +4,7 @@ use imgui::ImColor32;
 use imnodes::{InputPinId, NodeId};
 
 use crate::{
-    core::{app::AppState, App},
-    exprtree::{ExpressionNode, Sign},
-    message::Message,
-    pins::{InputPin, Pin},
-    utils::ModelFragment,
+    core::{app::AppState, App}, exprtree::{ExpressionNode, Sign}, locale::Locale, message::Message, pins::{InputPin, Pin}, utils::ModelFragment
 };
 
 use super::{
@@ -82,21 +78,21 @@ impl NodeImpl for Assigner {
         false
     }
 
-    fn draw(&mut self, ui: &imgui::Ui) -> bool {
+    fn draw(&mut self, ui: &imgui::Ui, locale: &Locale) -> bool {
         match self.expr_node.get_expr_repr() {
             Some(expr) => ui.text(expr),
-            None => ui.text("Nothing yet!"),
+            None => ui.text(locale.get("nothing-yet")),
         }
 
-        ui.text("Variable: ");
+        ui.text(locale.get("assigner-variable"));
         ui.same_line();
 
         match &self.operates_on {
             Some((_, node_name)) => {
                 ui.text(node_name);
-                ui.button("Change")
+                ui.button(locale.get("assigner-change"))
             }
-            None => ui.button("Choose"),
+            None => ui.button(locale.get("assigner-choose")),
         }
     }
 

@@ -2,11 +2,7 @@ use imgui::{ImColor32, Ui};
 use imnodes::{InputPinId, NodeId};
 
 use crate::{
-    core::widgets::input_num,
-    core::App,
-    exprtree::{ExpressionNode, Leaf, Sign},
-    pins::{OutputPin, Pin},
-    utils::ModelFragment,
+    core::{widgets::input_num, App}, exprtree::{ExpressionNode, Leaf, Sign}, locale::Locale, pins::{OutputPin, Pin}, utils::ModelFragment
 };
 
 use super::{NodeImpl, PendingOperations, SimpleNodeBuilder};
@@ -63,8 +59,8 @@ impl NodeImpl for Term {
         ExpressionNode::Leaf(self.leaf.clone())
     }
 
-    fn draw(&mut self, ui: &Ui) -> bool {
-        ui.text("Initial Value: ");
+    fn draw(&mut self, ui: &Ui, locale: &Locale) -> bool {
+        ui.text(locale.get("term-initial-value"));
         ui.same_line();
         input_num(ui, "##population initial value", &mut self.initial_value)
     }

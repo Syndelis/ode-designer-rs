@@ -22,7 +22,7 @@ Para isso, o software provê uma interface gráfica com um editor baseados em n�
 
 ![Plotagem da EDO dVar/dt = Var*Const nos tempos 41 até 50, para os valores iniciais Var = 1 e Const = 2](readme/demo-simulation.png)
 
-### Eportação do Código da Simulação em Python e PDF
+### Exportação do Código da Simulação em Python e PDF
 
 ```py
 # imports of scipy and numpy omitted
@@ -52,7 +52,7 @@ def system(t: np.float64, y: np.ndarray, *constants) -> np.ndarray:
 # Rest of the code used to simulate and plot to PDF omitted
 ```
 
-### Estensibilidade via código em Python
+### Extensibilidade via código em Python
 
 Dado o seguinte código de Python:
 
@@ -111,7 +111,7 @@ A distribuição de Windows consiste num ZIP que pode ser extraído e ter seu co
 
 ### Usando Docker
 
-Para compilar e utilizar o software e todo seu potencial, pode-se usar a imagem de Docker provida. As dependências são somente o próprio `docker` e o plugin `dokcer-buildx`.
+Para compilar e utilizar o software e todo seu potencial, pode-se usar a imagem de Docker provida. As dependências são somente o próprio `docker` e o plugin `docker-buildx`.
 
 ```sh
 $ docker buildx build -t ode-designer-appimage-builder .

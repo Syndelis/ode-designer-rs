@@ -67,25 +67,42 @@ impl System {
         // on two different screens, and thus we do not need to scale this
         // value (as the scaling is handled by winit)
         let font_size = 13.0f32;
-        let font_awesome_size = font_size;
+        let nerdfont_size = font_size;
 
-        let font_awesome = include_bytes!(concat!(
+        let nerdfont = include_bytes!(concat!(
             env!("CARGO_MANIFEST_DIR"),
-            "/assets/fonts/fork-awesome.ttf"
+            "/assets/fonts/nerdfont-mono.ttf"
         ));
+
+        // Magic runes gotten from these ancient scrolls:
+        // https://github.com/ryanoasis/nerd-fonts/wiki/Glyph-Sets-and-Code-Points
+        static NERDFONT_RANGE: &[u32] = &[
+            0x23fb, 0x23fe, 
+            0xe000, 0xe00a, 
+            0xe0a0, 0xe0a2, 
+            0xe0b0, 0xe0b3, 
+            0xe0b4, 0xe0c8, 
+            0xe0cc, 0xe0d4, 
+            0xe200, 0xe2a9, 
+            0xe300, 0xe3e3, 
+            0xe5fa, 0xe6b1, 
+            0xe700, 0xe7c5, 
+            0xea60, 0xebeb, 
+            0xf000, 0xf2e0, 
+            0xf300, 0xf372, 
+            0xf400, 0xfd46, 
+            0xf0001, 0xf1af0,
+            // Don't remove this otherwise it will panic
+            0
+        ];
 
         imgui.fonts().add_font(&[
             FontSource::DefaultFontData { config: None },
             FontSource::TtfData {
-                data: font_awesome,
-                size_pixels: font_awesome_size,
+                data: nerdfont,
+                size_pixels: nerdfont_size,
                 config: Some(FontConfig {
-                    // Makes the font act monospaced,
-                    glyph_min_advance_x: font_size,
-                    // Magic values copied from https://github.com/juliettef/IconFontCppHeaders
-                    glyph_ranges: FontGlyphRanges::from_slice(&[0xe005, 0xf8ff, 0]),
-                    // Prevent the default font from looking too ugly.
-                    pixel_snap_h: true,
+                    glyph_ranges: FontGlyphRanges::from_slice(NERDFONT_RANGE),
                     ..Default::default()
                 }),
             },

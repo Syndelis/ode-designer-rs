@@ -9,6 +9,7 @@ use core::{initialize_id_generator, style, System};
 
 use core::App;
 use imnodes::AttributeFlag;
+use locale::Locale;
 
 mod message;
 
@@ -20,6 +21,7 @@ pub mod extensions;
 pub mod nodes;
 pub mod pins;
 pub mod utils;
+pub mod locale;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     color_eyre::install().unwrap();
@@ -42,12 +44,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let _link_detach = nodeseditor.push(AttributeFlag::EnableLinkDetachWithDragClick);
     // let _link_creation = nodeseditor.push(AttributeFlag::EnableLinkCreationOnSnap);
 
-    let mut app = App::new();
+    let mut locale = Locale::default();
+    let mut app = App::new(&locale);
 
     let plot_ctx = implot::Context::create();
 
     system.main_loop(move |_, ui| {
-        app.draw(ui, &mut nodeseditor, &mut plot_ctx.get_plot_ui());
+        app.draw(ui, &mut nodeseditor, &mut plot_ctx.get_plot_ui(), &mut locale);
     });
     Ok(())
 }
