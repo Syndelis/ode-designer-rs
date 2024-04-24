@@ -385,7 +385,7 @@ impl AppState {
                 let x_window = (wsize[0] - w_width) / 2.0;
                 let y_window = (wsize[1] - w_height) / 2.0;
 
-                ui.window("Help")
+                ui.window(locale.get("about"))
                     .position([x_window,y_window], imgui::Condition::FirstUseEver)
                     .size([w_width,w_height], imgui::Condition::FirstUseEver)
                     .collapsible(false)
@@ -393,10 +393,7 @@ impl AppState {
                     .movable(false)
                     .build(|| {
                         //colocar um icone
-                        ui.text("ODE-designer");
-                        ui.text_wrapped("A software for computational modeling and simulation.");
-                        ui.text_wrapped("Authors: Brenno ...");
-                        ui.text("GitHub:https://github.com/Syndelis/ode-designer-rs");
+                        ui.text(locale.get("about-text"));
                         if ui.button("Ok") {
                             user_kept_open = false;                           
                         }

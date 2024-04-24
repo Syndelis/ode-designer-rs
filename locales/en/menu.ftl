@@ -12,3 +12,6 @@ export-code = { -export-code-btn(label: "Generate Code") }
 export-pdf = { -export-pdf-btn(label: "Plot to PDF") }
 
 language = { -language-btn(label: "Language") }
+
+about = { -about-btn(label: "Help") }
+about-text = { -about-txt(label: "https://github.com/Syndelis/ode-designer-rsteste") }

@@ -29,7 +29,10 @@
 -assigner-change-btn = { $label }###assigner-change
 -assigner-choose-btn = { $label }###assigner-choose
 
--language-btn =  { $label }##language
+-language-btn =  { $label }###language
+
+-about-btn = { $label }
+-about-txt = { $label }
 
 -term-icon = 󰫧
 -expression-icon = 
