@@ -31,8 +31,8 @@
 
 -language-btn =  { $label }###language
 
--about-btn = { $label }
--about-txt = { $label }
+-about-btn = { $label }###about
+-about-txt = { $label }###about-text
 
 -term-icon = 󰫧
 -expression-icon = 
