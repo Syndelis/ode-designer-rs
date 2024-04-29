@@ -115,19 +115,17 @@ impl App {
                 }
             });
 
+            if ui.menu_item(locale.get("about")) {
+                self.state = if let Some(AppState::MenuHelp) = self.state {
+                    None
+                } else {
+                    Some(AppState::MenuHelp)
+                }
+            }
+            
             if selected_loc != current_loc {
                 self.update_locale(locale, selected_loc.clone());
-            }
-
-            ui.menu(locale.get("about"), || {
-                if ui.menu_item(locale.get("about")) {
-                    self.state = if let Some(AppState::MenuHelp) = self.state {
-                        None
-                    } else {
-                        Some(AppState::MenuHelp)
-                    }
-                }
-            });
+            }            
         });
     }
 }

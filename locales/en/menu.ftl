@@ -14,4 +14,4 @@ export-pdf = { -export-pdf-btn(label: "Plot to PDF") }
 language = { -language-btn(label: "Language") }
 
 about = { -about-btn(label: "Help") }
-about-text = { -about-txt(label: "https://github.com/Syndelis/ode-designer-rsteste") }
+about-text = { -about-txt(label: "ODE-Designer, A User-Friendly Open-Source Software for Building and Simulating Ordinary Differential Equation Models.") }

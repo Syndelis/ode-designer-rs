@@ -14,4 +14,4 @@ export-pdf = { -export-pdf-btn(label: "Plotar em PDF") }
 language = { -language-btn(label: "Idioma") }
 
 about = { -about-btn(label: "Ajuda") }
-about-text = { -about-txt(label: "Um software") }
+about-text = { -about-txt(label: "ODE-Designer, Um software de código aberto e fácil de usar para construir e simular modelos de equações diferenciais ordinárias. ") }
