@@ -32,7 +32,7 @@
 -language-btn =  { $label }###language
 
 -about-btn = { $label }###about
--about-txt = { $label }###about-text
+-about-txt = { $label }
 
 -term-icon = 󰫧
 -expression-icon = 

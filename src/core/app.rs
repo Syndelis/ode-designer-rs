@@ -380,8 +380,8 @@ impl AppState {
             AppState::MenuHelp => {
                 let wsize = ui.window_size();
                 let mut user_kept_open = true;
-                let w_height = 200.0;
-                let w_width = 300.0;
+                let w_height = 230.0;
+                let w_width = 500.0;
                 let x_window = (wsize[0] - w_width) / 2.0;
                 let y_window = (wsize[1] - w_height) / 2.0;
 
@@ -393,10 +393,17 @@ impl AppState {
                     .movable(false)
                     .build(|| {
                         //colocar um icone
-                        ui.text(locale.get("about-text"));
+                        ui.text_wrapped(locale.get("about-text"));
+                        ui.text("Authors (in alphabetical order):");
+                        ui.text("Alexandre Pigozzo alexbprr@gmail.com @alexbprr");
+                        ui.text("Brenno Lemos dev@brenno.codes @Syndelis");
+                        ui.text("Davi Jannotti Coelho Pinheiro davi29012004@gmail.com @davijannotti"); 
+                        ui.text("Diego Augusto Silva Castro diego.augusto@protonmail.com @Diegovsky"); 
+                        ui.text("Sávio Francisco Cirino da Paz saviofrancisco150@hotmail.com @S-Pz");
+                        
                         if ui.button("Ok") {
                             user_kept_open = false;                           
-                        }
+                        }                        
                         
                     });
 
