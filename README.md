@@ -124,7 +124,7 @@ After this execution, the AppImage should be available in `.container-target/app
 
 ### Manually
 
-To compile and run the software outside of the AppImage, the Rust toolchain is required, as well as Python >= 3.11, and the dependencies listed in `requirements.txt`. Fulfilling these requirements, simply compile like any Rust project, running
+To compile and run the software outside of the AppImage, the Rust toolchain (nightly version) is required, as well as Python >= 3.11, and the dependencies listed in `requirements.txt`. Fulfilling these requirements, simply compile like any Rust project, running
 
 ```sh
 $ cargo run
