@@ -1,5 +1,8 @@
 # ODE-Designer
 
+> [!IMPORTANT]
+> This repository has been moved to the Federal University of São João Del-Rei's organization, here: https://github.com/ufsj-dcomp/ode-designer-rs
+
 ## Introduction
 
 Below are the description of the software, how to install it, and a brief introduction on how to use it.
